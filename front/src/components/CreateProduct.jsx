@@ -1,61 +1,68 @@
 import React, { useState } from "react";
-import { useAuth } from "./AuthProvider"; // Adjust the import path as needed
+import axios from "axios";
+import img3 from "../image/add.png";
 
-function CreateProduct({ onCreate }) {
-  const auth = useAuth(); // Use the whole context object
+function CreateProduct() {
+  const [productName, setProductName] = useState("");
+  const [price, setPrice] = useState("");
+  const [image, setImage] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
-  const [product, setProduct] = useState({
-    productName: "",
-    price: 0,
-    image: "",
-  });
+  const handleAddProduct = async () => {
+    try {
+      // Make axios.post request to add the product
+      const response = await axios.post("http://localhost:8080/api/products/post", {
+        productName,
+        price,
+        image,
+      });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      [name]: value,
-    }));
-  };
 
-  const handleCreate = () => {
-    // Check if the user is authenticated before creating the product
-    if (auth.user) {
-      // Assuming onCreate is a prop function passed from the parent component
-      onCreate(product);
-      // Reset form fields after creating the product
-      setProduct({ productName: "", price: 0, image: "" });
-    } else {
-      // Handle unauthorized access, redirect to login page, or show a message
-      console.log("User not authenticated. Redirecting to login page...");
+      // Close the modal
+      setShowModal(false);
+    } catch (error) {
+      console.error("Error adding product:", error);
     }
   };
 
   return (
-    <div>
-      <h2>Create Product</h2>
-      <label>Product Name:</label>
-      <input
-        type="text"
-        name="productName"
-        value={product.productName}
-        onChange={handleInputChange}
+    <div className="rare">
+      <img
+        src={img3}
+        alt="Add"
+        className="add-icon"
+        onClick={() => setShowModal(true)}
       />
-      <label>Price:</label>
-      <input
-        type="number"
-        name="price"
-        value={product.price}
-        onChange={handleInputChange}
-      />
-      <label>Image URL:</label>
-      <input
-        type="text"
-        name="image"
-        value={product.image}
-        onChange={handleInputChange}
-      />
-      <button onClick={handleCreate}>Create Product</button>
+
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <label>Product Name:</label>
+            <input
+              type="text"
+              value={productName}
+              onChange={(e) => setProductName(e.target.value)}
+            />
+
+            <label>Price:</label>
+            <input
+              type="text"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+
+            <label>Image URL:</label>
+            <input
+              type="text"
+              value={image}
+              onChange={(e) => setImage(e.target.value)}
+            />
+
+            <button onClick={handleAddProduct}>Add Product</button>
+            <button onClick={() => setShowModal(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
