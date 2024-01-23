@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import img3 from "../image/add.png";
 
-function CreateProduct() {
+function CreateProduct({ onCreate }) {
   const [productName, setProductName] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
@@ -17,6 +17,8 @@ function CreateProduct() {
         image,
       });
 
+      // Call the provided onCreate function to update the parent state
+      onCreate(response.data);
 
       // Close the modal
       setShowModal(false);

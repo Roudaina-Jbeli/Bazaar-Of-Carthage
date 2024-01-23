@@ -99,11 +99,12 @@ function ReadProducts() {
   };
 
   return (
-    <><button  onClick={() => setShowCartModal(true)}>
+    <div className="container"><button className="rare" onClick={() => setShowCartModal(true)}>
+
     <img src={img4} alt="Cart" className="cart-icon" />
   </button>
     <div className="products-container">
-      <h2 className="textt1"></h2>
+      {/* <h2 className="textt1"></h2> */}
       
       {products.map((product, index) => (
         <div
@@ -195,7 +196,7 @@ function ReadProducts() {
         </div>
       )}
     </div>
-    </>
+    </div>
   );
 }
 
