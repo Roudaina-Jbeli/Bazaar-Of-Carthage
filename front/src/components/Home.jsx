@@ -8,7 +8,7 @@ import ReadProducts from "./ReadProducts.jsx";
 
 function Home() {
   const [tunisian, setTun] = useState([]);
-   const[x,setx]=useState(false)
+  const[x,setx]=useState(false)
   useEffect(() => {
     fetchData(); // Fetch initial data
   },x); // Adding an empty dependency array to ensure the effect runs only once
